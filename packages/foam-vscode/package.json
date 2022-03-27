@@ -1,32 +1,25 @@
 {
-  "name": "foam-vscode",
-  "displayName": "Foam",
-  "description": "VS Code + Markdown + Wikilinks for your note taking and knowledge base",
+  "name": "foam-lite-vscode",
+  "displayName": "Foam Lite",
+  "description": "Wikilink to Markdown Link, Backlink to Markdown Link, Internal Link, Create Template Note",
   "private": true,
   "repository": {
-    "url": "https://github.com/foambubble/foam",
+    "url": "https://github.com/theowenyoung/foam",
     "type": "git"
   },
-  "homepage": "https://github.com/foambubble/foam",
-  "version": "0.17.6",
+  "homepage": "https://github.com/theowenyoung/foam",
+  "version": "0.17.10",
   "license": "MIT",
-  "publisher": "foam",
+  "publisher": "theowenyoung",
   "engines": {
     "vscode": "^1.47.1"
   },
-  "icon": "assets/icon/FOAM_ICON_256.png",
+  "icon": "assets/icon/foam-lite-icon.png",
   "categories": [
     "Other"
   ],
   "activationEvents": [
     "workspaceContains:.vscode/foam.json",
-    "onView:foam-vscode.tags-explorer",
-    "onCommand:foam-vscode.update-wikilinks",
-    "onCommand:foam-vscode.open-daily-note",
-    "onCommand:foam-vscode.open-random-note",
-    "onCommand:foam-vscode.janitor",
-    "onCommand:foam-vscode.copy-without-brackets",
-    "onCommand:foam-vscode.show-graph",
     "onCommand:foam-vscode.create-new-template",
     "onCommand:foam-vscode.create-note-from-template",
     "onCommand:foam-vscode.create-note-from-default-template"
@@ -34,149 +27,10 @@
   "main": "./out/extension.js",
   "contributes": {
     "markdown.markdownItPlugins": true,
-    "markdown.previewStyles": [
-      "./static/preview/style.css"
-    ],
-    "grammars": [
-      {
-        "path": "./syntaxes/injection.json",
-        "scopeName": "foam.wikilink.injection",
-        "injectTo": [
-          "text.html.markdown"
-        ]
-      }
-    ],
-    "colors": [
-      {
-        "id": "foam.placeholder",
-        "description": "Color of foam placeholders.",
-        "defaults": {
-          "dark": "editorWarning.foreground",
-          "light": "editorWarning.foreground",
-          "highContrast": "editorWarning.foreground"
-        }
-      }
-    ],
-    "views": {
-      "explorer": [
-        {
-          "id": "foam-vscode.backlinks",
-          "name": "Backlinks",
-          "icon": "media/dep.svg",
-          "contextualTitle": "Backlinks"
-        },
-        {
-          "id": "foam-vscode.tags-explorer",
-          "name": "Tag Explorer",
-          "icon": "media/dep.svg",
-          "contextualTitle": "Tags Explorer"
-        },
-        {
-          "id": "foam-vscode.orphans",
-          "name": "Orphans",
-          "icon": "media/dep.svg",
-          "contextualTitle": "Orphans"
-        },
-        {
-          "id": "foam-vscode.placeholders",
-          "name": "Placeholders",
-          "icon": "media/dep.svg",
-          "contextualTitle": "Placeholders"
-        }
-      ]
-    },
-    "viewsWelcome": [
-      {
-        "view": "foam-vscode.tags-explorer",
-        "contents": "No tags found. Notes that contain tags will show up here. You may add tags to a note with a hashtag (#tag) or by adding a tag list to the front matter (tags: tag1, tag2)."
-      },
-      {
-        "view": "foam-vscode.backlinks",
-        "contents": "No backlinks found for selected resource."
-      },
-      {
-        "view": "foam-vscode.orphans",
-        "contents": "No orphans found. Notes that have no backlinks nor links will show up here."
-      },
-      {
-        "view": "foam-vscode.placeholders",
-        "contents": "No placeholders found. Pending links and notes without content will show up here."
-      }
-    ],
-    "menus": {
-      "view/title": [
-        {
-          "command": "foam-vscode.group-orphans-by-folder",
-          "when": "view == foam-vscode.orphans && foam-vscode.orphans-grouped-by-folder == false",
-          "group": "navigation"
-        },
-        {
-          "command": "foam-vscode.group-orphans-off",
-          "when": "view == foam-vscode.orphans && foam-vscode.orphans-grouped-by-folder == true",
-          "group": "navigation"
-        },
-        {
-          "command": "foam-vscode.group-placeholders-by-folder",
-          "when": "view == foam-vscode.placeholders && foam-vscode.placeholders-grouped-by-folder == false",
-          "group": "navigation"
-        },
-        {
-          "command": "foam-vscode.group-placeholders-off",
-          "when": "view == foam-vscode.placeholders && foam-vscode.placeholders-grouped-by-folder == true",
-          "group": "navigation"
-        }
-      ],
-      "commandPalette": [
-        {
-          "command": "foam-vscode.group-orphans-by-folder",
-          "when": "false"
-        },
-        {
-          "command": "foam-vscode.group-orphans-off",
-          "when": "false"
-        },
-        {
-          "command": "foam-vscode.group-placeholders-by-folder",
-          "when": "false"
-        },
-        {
-          "command": "foam-vscode.group-placeholders-off",
-          "when": "false"
-        },
-        {
-          "command": "foam-vscode.open-resource",
-          "when": "false"
-        }
-      ]
-    },
     "commands": [
       {
         "command": "foam-vscode.set-log-level",
         "title": "Foam: Set log level"
-      },
-      {
-        "command": "foam-vscode.show-graph",
-        "title": "Foam: Show graph"
-      },
-      {
-        "command": "foam-vscode.update-wikilinks",
-        "title": "Foam: Update Markdown Reference List"
-      },
-      {
-        "command": "foam-vscode.open-daily-note",
-        "title": "Foam: Open Daily Note"
-      },
-      {
-        "command": "foam-vscode.open-random-note",
-        "title": "Foam: Open Random Note"
-      },
-      {
-        "command": "foam-vscode.janitor",
-        "title": "Foam: Run Janitor (Experimental)"
-      },
-      {
-        "command": "foam-vscode.copy-without-brackets",
-        "title": "Foam: Copy To Clipboard Without Brackets"
       },
       {
         "command": "foam-vscode.create-note-from-template",
@@ -187,36 +41,12 @@
         "title": "Foam: Create New Note"
       },
       {
-        "command": "foam-vscode.open-resource",
-        "title": "Foam: Open Resource"
-      },
-      {
-        "command": "foam-vscode.group-orphans-by-folder",
-        "title": "Foam: Group Orphans By Folder",
-        "icon": "$(list-tree)"
-      },
-      {
-        "command": "foam-vscode.group-orphans-off",
-        "title": "Foam: Don't Group Orphans",
-        "icon": "$(list-flat)"
-      },
-      {
-        "command": "foam-vscode.group-placeholders-by-folder",
-        "title": "Foam: Group Placeholders By Folder",
-        "icon": "$(list-tree)"
-      },
-      {
-        "command": "foam-vscode.group-placeholders-off",
-        "title": "Foam: Don't Group Placeholders",
-        "icon": "$(list-flat)"
-      },
-      {
         "command": "foam-vscode.create-new-template",
         "title": "Foam: Create New Template"
       }
     ],
     "configuration": {
-      "title": "Foam",
+      "title": "Foam Lite",
       "properties": {
         "foam.files.ignore": {
           "type": [
@@ -241,136 +71,18 @@
             "error"
           ]
         },
-        "foam.edit.linkReferenceDefinitions": {
-          "type": "string",
-          "default": "off",
-          "enum": [
-            "withExtensions",
-            "withoutExtensions",
-            "off"
-          ],
-          "enumDescriptions": [
-            "Include extension in wikilinks paths",
-            "Remove extension in wikilink paths",
-            "Disable wikilink definitions generation"
-          ]
-        },
-        "foam.links.hover.enable": {
-          "description": "Enable displaying note content on hover links",
+        "foamLite.internalLink.enableRelativeLink": {
+          "description": "Enable relative live for wiki link auto completion, false will generate a absolute link",
           "type": "boolean",
           "default": true
         },
-        "foam.decorations.links.enable": {
-          "description": "Enable decorations for links",
-          "type": "boolean",
-          "default": true
-        },
-        "foam.openDailyNote.onStartup": {
-          "type": "boolean",
-          "default": false
-        },
-        "foam.openDailyNote.fileExtension": {
+        "foamLite.internalLink.absoluteLinkPrefix": {
+          "description": "absolute link prefix, the default will be `/`, if you want to use a different prefix, please set it here",
           "type": "string",
-          "default": "md"
-        },
-        "foam.openDailyNote.filenameFormat": {
-          "type": "string",
-          "default": "isoDate",
-          "markdownDescription": "Specifies how the daily note filename is formatted. See the [dateformat docs](https://www.npmjs.com/package/dateformat) for valid formats"
-        },
-        "foam.openDailyNote.titleFormat": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "default": null,
-          "markdownDescription": "Specifies how the daily note title is formatted. Will default to the filename format if set to null. See the [dateformat docs](https://www.npmjs.com/package/dateformat) for valid formats"
-        },
-        "foam.openDailyNote.directory": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "default": null,
-          "description": "The directory into which daily notes should be created. Defaults to the workspace root."
-        },
-        "foam.orphans.exclude": {
-          "type": [
-            "array"
-          ],
-          "default": [],
-          "markdownDescription": "Specifies the list of glob patterns that will be excluded from the orphans report. To ignore the all the content of a given folder, use `**<folderName>/**/*`"
-        },
-        "foam.orphans.groupBy": {
-          "type": [
-            "string"
-          ],
-          "enum": [
-            "off",
-            "folder"
-          ],
-          "enumDescriptions": [
-            "Disable grouping",
-            "Group by folder"
-          ],
-          "default": "folder",
-          "markdownDescription": "Group orphans report entries by."
-        },
-        "foam.placeholders.exclude": {
-          "type": [
-            "array"
-          ],
-          "default": [],
-          "markdownDescription": "Specifies the list of glob patterns that will be excluded from the placeholders report. To ignore the all the content of a given folder, use `**<folderName>/**/*`"
-        },
-        "foam.placeholders.groupBy": {
-          "type": [
-            "string"
-          ],
-          "enum": [
-            "off",
-            "folder"
-          ],
-          "enumDescriptions": [
-            "Disable grouping",
-            "Group by folder"
-          ],
-          "default": "folder",
-          "markdownDescription": "Group blank note report entries by."
-        },
-        "foam.dateSnippets.afterCompletion": {
-          "type": "string",
-          "default": "createNote",
-          "enum": [
-            "noop",
-            "createNote",
-            "navigateToNote"
-          ],
-          "enumDescriptions": [
-            "Nothing happens after selecting the completion item",
-            "The note is created following your daily note settings if it does not exist, but no navigation takes place",
-            "Navigates to the note, creating it following your daily note settings if it does not exist"
-          ],
-          "description": "Whether or not to navigate to the target daily note when a daily note snippet is selected."
-        },
-        "foam.graph.titleMaxLength": {
-          "type": "number",
-          "default": 24,
-          "description": "The maximum title length before being abbreviated. Set to 0 or less to disable."
-        },
-        "foam.graph.style": {
-          "type": "object",
-          "description": "Custom graph styling settings. An example is present in the documentation.",
-          "default": {}
+          "default": "/"
         }
       }
-    },
-    "keybindings": [
-      {
-        "command": "foam-vscode.open-daily-note",
-        "key": "alt+d"
-      }
-    ]
+    }
   },
   "scripts": {
     "build": "tsc -p ./",
@@ -385,7 +97,7 @@
     "watch": "tsc --build ./tsconfig.json --watch",
     "vscode:start-debugging": "yarn clean && yarn watch",
     "vscode:prepublish": "yarn npm-install && yarn run build",
-    "npm-install": "rimraf node_modules && npm i",
+    "npm-install": "rimraf node_modules && npm i --legacy-peer-deps",
     "npm-cleanup": "rimraf package-lock.json node_modules && yarn",
     "package-extension": "npx vsce package && yarn npm-cleanup",
     "install-extension": "code --install-extension ./foam-vscode-$npm_package_version.vsix",

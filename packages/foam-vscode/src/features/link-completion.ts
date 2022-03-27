@@ -16,6 +16,26 @@ const feature: FoamFeature = {
     foamPromise: Promise<Foam>
   ) => {
     const foam = await foamPromise;
+    vscode.commands.registerCommand(
+      'foam-vscode.delete-wiki-link-end-brackets',
+      () => {
+        const editor = vscode.window.activeTextEditor;
+        if (editor) {
+          const current = editor.selection.active;
+          editor.edit(editBuilder => {
+            editBuilder.delete(
+              new vscode.Range(
+                current.line,
+                current.character,
+                current.line,
+                current.character + 2
+              )
+            );
+          });
+          return;
+        }
+      }
+    );
     context.subscriptions.push(
       vscode.languages.registerCompletionItemProvider(
         mdDocSelector,
@@ -108,7 +128,13 @@ export class CompletionProvider
     if (!requiresAutocomplete || requiresAutocomplete[0].indexOf('#') >= 0) {
       return null;
     }
-
+    // get config
+    const relativeLinkEnable = vscode.workspace
+      .getConfiguration('foamLite.internalLink')
+      .get('enableRelativeLink', true);
+    const absoluteLinkPrefix = vscode.workspace
+      .getConfiguration('foamLite.internalLink')
+      .get('absoluteLinkPrefix', '/');
     const text = requiresAutocomplete[0];
     const replacementRange = new vscode.Range(
       position.line,
@@ -124,9 +150,35 @@ export class CompletionProvider
         resource.uri
       );
       item.filterText = resource.uri.getName();
-      item.insertText = this.ws.getIdentifier(resource.uri);
+      const identifier = this.ws.getIdentifier(resource.uri);
       item.range = replacementRange;
       item.commitCharacters = ['#'];
+
+      const rootUri = vscode.workspace.workspaceFolders[0].uri;
+      const title = resource.title || identifier;
+      let finalLink = '';
+      if (relativeLinkEnable) {
+        finalLink = resource.uri.relativeTo(fromVsCodeUri(document.uri)).path;
+      } else {
+        finalLink = resource.uri.relativeTo(fromVsCodeUri(rootUri)).path;
+
+        if (typeof absoluteLinkPrefix === 'string') {
+          finalLink = absoluteLinkPrefix + finalLink;
+        }
+      }
+      const newText = `[${title}](${finalLink})`;
+      const start = position.character - 2;
+      item.additionalTextEdits = [
+        vscode.TextEdit.delete(
+          new vscode.Range(position.line, start, position.line, start + 2)
+        ),
+      ];
+      item.insertText = newText;
+      item.command = {
+        title: 'delete-wiki-link-end-brackets',
+        command: 'foam-vscode.delete-wiki-link-end-brackets',
+      };
+
       return item;
     });
     const placeholders = Array.from(this.graph.placeholders.values()).map(
